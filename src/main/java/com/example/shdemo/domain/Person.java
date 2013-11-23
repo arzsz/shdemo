@@ -18,32 +18,44 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@NamedQueries({ 
-	@NamedQuery(name = "person.all", query = "Select p from Person p"),
-	@NamedQuery(name = "person.byPin", query = "Select p from Person p where p.pin = :pin")
-})
+@NamedQueries({
+		@NamedQuery(name = "person.all", query = "Select p from Person p"),
+		@NamedQuery(name = "person.byPin", query = "Select p from Person p where p.pin = :pin") })
 public class Person {
 
 	private Long id;
-
 	private String firstName = "unknown";
+	private String lastName;
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	// Be careful here, both with lazy and eager fetch type
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Camera> getCameras() {
+		return cameras;
+	}
+
+	public void setCameras(List<Camera> cameras) {
+		this.cameras = cameras;
+	}
+
 	private String pin = "";
 	private Date registrationDate = new Date();
 
-	private List<Car> cars = new ArrayList<Car>();
+	private List<Camera> cameras = new ArrayList<Camera>();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -52,6 +64,7 @@ public class Person {
 	public String getPin() {
 		return pin;
 	}
+
 	public void setPin(String pin) {
 		this.pin = pin;
 	}
@@ -60,16 +73,17 @@ public class Person {
 	public Date getRegistrationDate() {
 		return registrationDate;
 	}
+
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
-	// Be careful here, both with lazy and eager fetch type
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	public List<Car> getCars() {
-		return cars;
+	public Long getId() {
+		return id;
 	}
-	public void setCars(List<Car> cars) {
-		this.cars = cars;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
+
 }
