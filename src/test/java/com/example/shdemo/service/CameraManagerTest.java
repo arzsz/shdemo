@@ -91,4 +91,44 @@ public class CameraManagerTest {
         assertEquals(MODEL_5, retrievedCamera.getModel());
 		
 	}
+	
+	@Test
+	public void readAllCamera() {
+        List<Camera> allCamera = cameraManager.getAllCamera();
+
+        assertEquals(2, allCamera.size());
+	}
+	
+	// read by id
+    public void readCameraById() {
+            int id = 2;
+
+            Camera retrievedCamera = cameraManager.findCameraById(id);
+            assertEquals(NAME_2, retrievedCamera.getName());
+            assertEquals(MODEL_2, retrievedCamera.getModel());
+    }
+
+    @Test
+    // delete
+    public void delCamera() {
+            Camera retrievedCamera = cameraManager.findCameraById(1);
+            cameraManager.delCamera(retrievedCamera);
+
+            assertEquals(null, cameraManager.findCameraById(1));
+    }
+    
+    @Test
+    // update
+    public void upCamera() {
+            int id = 3;
+            Camera retrievedCamera = cameraManager.findCameraById(id);
+            retrievedCamera.setName(NAME_2);
+            retrievedCamera.setModel(MODEL_2);
+            cameraManager.upCamera(retrievedCamera);
+            retrievedCamera = cameraManager.findCameraById(id);
+
+            assertEquals(NAME_2, retrievedCamera.getName());
+            assertEquals(MODEL_2, retrievedCamera.getModel());
+    }
+	
 }
